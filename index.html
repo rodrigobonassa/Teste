@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Monitoramento Sites</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="dashboard">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Integração pronta para n8n</p>
+          <h1>MONITORAMENTO SITES</h1>
+          <p class="subtitle">
+            Painel em tempo real com alerta sonoro para falhas recebidas do seu fluxo.
+          </p>
+        </div>
+
+        <section class="connection-panel">
+          <label class="field">
+            <span>Endpoint do n8n</span>
+            <input id="endpoint-input" type="url" placeholder="https://seu-n8n/webhook/monitoramento" />
+          </label>
+          <div class="actions">
+            <button id="save-endpoint" type="button">Salvar endpoint</button>
+            <button id="test-alert" type="button" class="secondary">Testar alerta</button>
+          </div>
+          <p class="helper">
+            O painel consulta o endpoint a cada <strong>15 segundos</strong>. O n8n deve responder JSON.
+          </p>
+        </section>
+      </header>
+
+      <section class="status-bar">
+        <div>
+          <strong>Última atualização:</strong>
+          <span id="last-update">aguardando dados...</span>
+        </div>
+        <div>
+          <strong>Falhas ativas:</strong>
+          <span id="active-failures">0</span>
+        </div>
+      </section>
+
+      <section id="sites-grid" class="sites-grid" aria-live="polite"></section>
+
+      <section class="integration-guide">
+        <h2>Formato esperado do JSON</h2>
+<pre><code>{
+  "updatedAt": "2026-03-18T12:30:00Z",
+  "sites": [
+    {
+      "name": "ABC da Educação",
+      "checks": [
+        { "label": "Webhook", "status": "ok" },
+        { "label": "Ações pendentes", "status": "ok" },
+        { "label": "Emails com falha", "status": "ok" }
+      ]
+    },
+    {
+      "name": "Prof. Decorativa",
+      "checks": [
+        { "label": "Webhook", "status": "failure", "message": "Sem retorno há 5 min" },
+        { "label": "Ações pendentes", "status": "ok" },
+        { "label": "Emails com falha", "status": "ok" }
+      ]
+    }
+  ]
+}</code></pre>
+        <p>
+          Dica: no n8n, um <em>Webhook</em> ou <em>Respond to Webhook</em> pode devolver esse JSON.
+          Se preferir, troque o polling por WebSocket/SSE futuramente sem alterar o layout.
+        </p>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
